@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Universal Device Doctor</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f0f0f0; }
+        textarea { width: 100%; height: 100px; }
+        button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        #solution { margin-top: 20px; font-weight: bold; color: blue; }
+    </style>
+</head>
+<body>
+    <h2>Describe Your Device Problem:</h2>
+    <textarea id="problem"></textarea><br><br>
+    <button onclick="getSolution()">Check Solution</button>
+    <div id="solution"></div>
+
+    <script>
+        function getSolution() {
+            let problem = document.getElementById("problem").value;
+            fetch("/diagnose", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "problem=" + encodeURIComponent(problem)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("solution").innerText = data.solution;
+            });
+        }
+    </script>
+</body>
+</html>
